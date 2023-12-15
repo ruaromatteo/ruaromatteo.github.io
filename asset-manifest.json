@@ -1,14 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.d9258ae4.css",
-    "main.js": "/static/js/main.b569675a.js",
+    "main.css": "/static/css/main.36beb065.css",
+    "main.js": "/static/js/main.ed035018.js",
     "static/js/787.4c617d16.chunk.js": "/static/js/787.4c617d16.chunk.js",
+    "static/media/clouds-dark.png": "/static/media/clouds-dark.f6e1314322964b4dbcc7.png",
     "static/media/banner-bg.png": "/static/media/banner-bg.7df1f090eff58ea4f9c6.png",
-    "static/media/clouds.png": "/static/media/clouds.67a542cb789140671d24.png",
-    "static/media/earth-texture-map-cartoon.jpg": "/static/media/earth-texture-map-cartoon.de27b212d5e793162075.jpg",
+    "static/media/earth-texture-map-cartoon-dark.png": "/static/media/earth-texture-map-cartoon-dark.1105605ad2b03418fb64.png",
     "static/media/header-img.png": "/static/media/header-img.039ac7fbd3747f1a1440.png",
     "static/media/color-sharp.png": "/static/media/color-sharp.bea361cfef80fefc2d1e.png",
     "static/media/color-sharp2.png": "/static/media/color-sharp2.c87586c6c2f549cb4aa6.png",
+    "static/media/matteo-eum-mcr.png": "/static/media/matteo-eum-mcr.244cef9fd0484ded8c50.png",
     "static/media/12345.jpg": "/static/media/12345.1f474f9f1f6bad032384.jpg",
     "static/media/CentraNo2-Bold.ttf": "/static/media/CentraNo2-Bold.2faff7f7d3fc92a2fcd9.ttf",
     "static/media/CentraNo2-Medium.ttf": "/static/media/CentraNo2-Medium.f94be5b326d78bb32b95.ttf",
@@ -19,6 +20,7 @@
     "static/media/project1.jpg": "/static/media/project1.6259e0ebdec49196168e.jpg",
     "static/media/forth project.jpg": "/static/media/forth project.90c863af83f18b02c00a.jpg",
     "static/media/odina2.png": "/static/media/odina2.a89694ad752ceadab471.png",
+    "static/media/left-swirl-arrow.png": "/static/media/left-swirl-arrow.7b3652699831304e94e5.png",
     "static/media/revicons.eot": "/static/media/revicons.a77de540a38981833f9e.eot",
     "static/media/revicons.ttf": "/static/media/revicons.57fd05d4ae650374c8de.ttf",
     "static/media/fifth work.jpg": "/static/media/fifth work.71144293371d30367ff8.jpg",
@@ -34,12 +36,12 @@
     "static/media/arrow2.svg": "/static/media/arrow2.3d9522b6fd8f2464b7200ebf2c1bb09a.svg",
     "static/media/arrow1.svg": "/static/media/arrow1.0c89b5b635adf255c2822c630aaa6ccf.svg",
     "static/media/nav-icon2.svg": "/static/media/nav-icon2.178f497aa17b70c42df2a1a8c926ed01.svg",
-    "main.d9258ae4.css.map": "/static/css/main.d9258ae4.css.map",
-    "main.b569675a.js.map": "/static/js/main.b569675a.js.map",
+    "main.36beb065.css.map": "/static/css/main.36beb065.css.map",
+    "main.ed035018.js.map": "/static/js/main.ed035018.js.map",
     "787.4c617d16.chunk.js.map": "/static/js/787.4c617d16.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.d9258ae4.css",
-    "static/js/main.b569675a.js"
+    "static/css/main.36beb065.css",
+    "static/js/main.ed035018.js"
   ]
 }
