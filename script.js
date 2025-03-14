@@ -5,17 +5,6 @@ document.documentElement.classList.toggle(
         window.matchMedia("(prefers-color-scheme: dark)").matches)
 );
 
-let themeBtn = document.getElementById("toggle-theme");
-
-themeBtn.addEventListener("click", () => {
-    document.documentElement.classList.toggle("dark");
-    if (document.documentElement.classList.contains("dark")) {
-        localStorage.setItem("theme", "dark");
-    } else {
-        localStorage.setItem("theme", "light");
-    }
-});
-
 // localStorage.removeItem('theme')
 function toggleMenu(state) {
     let sidebar = document.getElementById("sidebar");
@@ -275,8 +264,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const containerHeight = globeContainer.clientHeight;
 
     const myGlobe = new Globe(globeContainer)
-        .width(containerWidth)
-        .height(containerHeight)
+        // .width(containerWidth)
+        // .height(containerHeight)
+        .width(Math.min(containerWidth, 500)) // Limit initial width
+        .height(Math.min(containerWidth * 0.75, 375)) // Maintain 4:3 aspect ratio with max height
         .globeImageUrl('./assets/images/earth_neon_bw_dark.png')
         .globeMaterial(new THREE.MeshPhongMaterial({
             shininess: 0.3,
@@ -430,6 +421,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         });
 
+    // Disable zoom and set auto-rotation
+    myGlobe.controls().enableZoom = false;
+    myGlobe.controls().autoRotate = true;
+    myGlobe.controls().autoRotateSpeed = 0.7;
+    // Create purple ambient light
+    const ambientLight = new THREE.AmbientLight(0x9061fa, 3); // Using your purple hex code
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
+    directionalLight.position.set(1, 1, 1);
+    myGlobe.lights([ambientLight, directionalLight]);
+
     // Add click handler for globe background to reset info display
     globeContainer.addEventListener('click', (event) => {
         // Check if click was on the globe background (not on a satellite)
@@ -440,24 +441,24 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Adjust initial view
-    myGlobe.pointOfView({ altitude: 2.5 });
-    setTimeout(() => myGlobe.pointOfView({ altitude: 3.5 }));
+    myGlobe.pointOfView({ altitude: 1.5 });
+    setTimeout(() => myGlobe.pointOfView({ altitude: 2 }));
 
     fetch('./assets/datasets/spacecrafts.tle').then(r => r.text()).then(rawData => {
         const tleData = rawData.replace(/\r/g, '')
             .split(/\n(?=[^12])/)
             .filter(d => d)
             .map(tle => tle.split('\n'));
+
         const satData = tleData.map(([name, ...tle]) => ({
             satrec: satellite.twoline2satrec(...tle),
-            name: name.trim().replace(/^0 /, '')
+            name: name.trim().replace(/^0 /, ''),
+            path: [] // Store the complete path as single array
         }))
-            // exclude those that can't be propagated
             .filter(d => !!satellite.propagate(d.satrec, new Date()).position);
 
         satelliteCount.innerText = satData.length;
 
-        // time ticker
         let time = new Date();
         (function frameTicker() {
             requestAnimationFrame(frameTicker);
@@ -465,20 +466,21 @@ document.addEventListener('DOMContentLoaded', () => {
             time = new Date(+time + TIME_STEP);
             timeLogger.innerText = time.toString();
 
-            // Update satellite positions
             const gmst = satellite.gstime(time);
+
             satData.forEach(d => {
                 const eci = satellite.propagate(d.satrec, time);
                 if (eci.position) {
                     const gdPos = satellite.eciToGeodetic(eci.position, gmst);
                     d.lat = satellite.radiansToDegrees(gdPos.latitude);
                     d.lng = satellite.radiansToDegrees(gdPos.longitude);
-                    d.alt = gdPos.height / EARTH_RADIUS_KM
+                    d.alt = gdPos.height / EARTH_RADIUS_KM;
+
                 }
             });
 
-            //console.log(satData.filter(d => !isNaN(d.lat) && !isNaN(d.lng) && !isNaN(d.alt)))
-            myGlobe.objectsData(satData.filter(d => !isNaN(d.lat) && !isNaN(d.lng) && !isNaN(d.alt)));
+            myGlobe
+                .objectsData(satData.filter(d => !isNaN(d.lat) && !isNaN(d.lng) && !isNaN(d.alt)));
         })();
     });
 
@@ -487,8 +489,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const newWidth = globeContainer.clientWidth;
         const newHeight = globeContainer.clientHeight;
         myGlobe
-            .width(newWidth)
-            .height(newHeight);
+            // .width(newWidth)
+            // .height(newHeight)
+            .width(Math.min(containerWidth, 500)) // Limit initial width
+            .height(Math.min(containerWidth * 0.75, 375)); // Maintain 4:3 aspect ratio with max height
     }
 
     const resizeObserver = new ResizeObserver(entries => {

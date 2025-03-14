@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="./assets/favicon.svg">
-    <title>Portfolio - By Matteo Ruaro</title>
+    <title>Matteo Ruaro's Portfolio</title>
     <!-- SEO -->
     <meta name="description" content="This is the personal website of Matteo Ruaro" />
     <meta name="keywords"
@@ -40,7 +40,7 @@
             width: 100vw; /* Full width of the viewport */
             height: 100%; /* Full height of the viewport */
             background-image:
-                    linear-gradient(to bottom, rgba(18, 24, 38, 0) 40%, rgba(18, 24, 38, 1) 100%),
+                    linear-gradient(to bottom, rgba(13, 19, 33, 0) 40%, rgba(13, 19, 33, 1) 100%),
                     url('./assets/images/herobg-ecbfddc8.png');
             background-repeat: no-repeat;
             background-size: cover;
@@ -63,10 +63,10 @@
             height: 100%;
             background-image:
                     linear-gradient(180deg,
-                    rgba(18, 24, 38, 1) 0%,
-                    rgba(18, 24, 38, 0) 20%,
-                    rgba(18, 24, 38, 0) 80%,
-                    rgba(18, 24, 38, 1) 100%),
+                    rgba(13, 19, 33, 1) 0%,
+                    rgba(13, 19, 33, 0) 20%,
+                    rgba(13, 19, 33, 0) 80%,
+                    rgba(13, 19, 33, 1) 100%),
                     url('./assets/images/night-sky.png');
             background-repeat: no-repeat;
             background-size: cover;
@@ -74,11 +74,32 @@
             z-index: -1;
             opacity: 0.5;
         }
+
+        footer::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100vw;
+            height: 100%;
+            background: black;
+            z-index: -1;
+        }
+
+        .bg-custom {
+            --tw-bg-opacity: 1;
+            background-color: #0d1321;
+        }
+
+        .tag-list li {
+            /* This modifies the border of the scrolling items */
+            border: 1px solid #9ca3af !important;
+            background-color: #090d17;
+        }
     </style>
 </head>
 
-<body
-    class=" max-w-screen-2xl bg-gray-100 mx-auto min-h-screen font-poppins-regular overflow-x-hidden dark:bg-gray-900 dark:text-gray-400 text-gray-800">
+<body class=" max-w-screen-2xl bg-custom mx-auto min-h-screen font-poppins-regular overflow-x-hidden  dark:text-gray-400 text-gray-800">
     <!--div id="cursor-small-dot" class="cursor-small-dot hidden">
     </div>
     <div id="cursor-big-dot" class="cursor-big-dot hidden">
@@ -97,7 +118,7 @@
             <div class=" flex flex-1 h-full w-full">
                 <ul class="flex h-full flex-col justify-start items-center w-full gap-5">
                     <li class=" w-full">
-                        <a onclick="toggleMenu('close')" href="#hero"
+                        <a onclick="toggleMenu('close')" href="#"
                             class=" w-full h-full px-2 py-4 rounded-full font-poppins-semibold text-sm flex items-center justify-center hover:bg-gray-200 ">
                             Home
                         </a>
@@ -109,9 +130,15 @@
                         </a>
                     </li>
                     <li class="  w-full">
+                        <a onclick="toggleMenu('close')" href="#experience"
+                           class=" w-full h-full px-2 py-4  rounded-full font-poppins-semibold text-sm flex items-center justify-center hover:bg-gray-200 ">
+                            My work
+                        </a>
+                    </li>
+                    <li class="  w-full">
                         <a onclick="toggleMenu('close')" href="#contact"
                             class=" w-full h-full px-2 py-4  rounded-full font-poppins-semibold text-sm flex items-center justify-center hover:bg-gray-200 ">
-                            contact
+                            Contact
                         </a>
                     </li>
                     <li class="  w-full">
@@ -130,20 +157,19 @@
         <header class=" mt-2 top-0 left-0 w-full sticky z-10" data-aos="fade-down" data-aos-once="true">
             <nav
                 class="flex rounded-2xl items-center py-2 px-5 shadow-lg bg-opacity-10 backdrop-blur-md relative dark:border-2 dark:border-gray-800">
-                <button name="toggle-theme" id="toggle-theme"
-                    class="  font-poppins-semibold text-sm flex flex-1 justify-center ">
+                <div class="  font-poppins-semibold text-sm flex flex-1 justify-center ">
                     It's <span class="font-poppins-black text-xl"> ME!</span>
-
-                    <span class="hidden dark:inline"> <i class="fa-solid fa-moon"></i></span> <span
-                        class="dark:hidden inline"><i class="fa-solid fa-sun"></i></span>
-                </button>
+                </div>
                 <div class="flex-1 md:flex justify-around hidden">
-                    <a href="#hero" class=" font-poppins-semibold text-sm flex items-center justify-center">
+                    <a href="#top" class=" font-poppins-semibold text-sm flex items-center justify-center">
                         <i class="fa-solid fa-house mr-2"></i>
                         Home
                     </a>
                     <a href="#about" class=" font-poppins-semibold text-sm flex items-center justify-center">
                         About
+                    </a>
+                    <a href="#experience" class=" font-poppins-semibold text-sm flex items-center justify-center">
+                        My Work
                     </a>
                     <a href="#contact" class=" font-poppins-semibold text-sm flex items-center justify-center">
                         Contact
@@ -272,7 +298,7 @@
             <!-- ABOUT -->
 
             <!-- Experience -->
-            <section class=" mt-2 mb-2 flex  flex-col  items-center py-5 px-5  relative overflow-hidden" id="expirence">
+            <section class=" mt-2 mb-2 flex  flex-col  items-center py-5 px-5  relative overflow-hidden" id="experience">
                 <h1 class=" font-poppins-black text-2xl md:text-4xl mb-10" data-aos="fade-up">WORK<span
                         class=" text-border dark:text-gray-300" style="-webkit-text-stroke: 1px #9061fa"> EXPERIENCE</span>
                 </h1>
@@ -374,47 +400,48 @@
             <!-- Experience -->
 
             <!-- SATELLITES -->
-            <section class="mt-2 mb-2 flex flex-col xl:flex-row items-center py-5 px-5 relative overflow-hidden" id="satellites">
+            <section class="mt-2 mb-2 relative" id="satellites">
+                <div class="flex flex-col xl:flex-row items-center py-5 px-5 relative">
+                    <!-- Left Column - Information -->
+                    <div class="min-w-1/2 p-5" data-aos="fade-right">
+                        <h1 class="font-poppins-black text-2xl md:text-4xl mb-5">
+                            MY <span class="text-border dark:text-gray-300" style="-webkit-text-stroke: 1px #9061fa">SATELLITES</span>
+                        </h1>
 
-                <!-- Left Column - Information -->
-                <div class="flex-1 p-5" data-aos="fade-right">
-                    <h1 class="font-poppins-black text-2xl md:text-4xl mb-5">
-                        MY <span class="text-border dark:text-gray-300" style="-webkit-text-stroke: 1px #9061fa">SATELLITES</span>
-                    </h1>
+                        <!-- Default Info Text -->
+                        <div id="default-satellite-info" class="satellite-info active w-full">
+                            <p class="text-justify mb-5">
+                                This interactive globe shows simulates the real positions of various satellites orbiting Earth that I worked with.
+                            </p>
+                            <p class="text-justify mb-5">
+                                You can <span style="color: #9061fa">play</span> around with the globe: click on any satellite to learn more about its mission and my contribution to it.
+                            </p>
+                            <p>
+                                Please be aware that this might not work on mobile devices!
+                            </p>
+                            <div class="text-sm text-gray-500" style="margin-top: 10px">
+                                <p id="time-log" class="font-roboto-mono-bold"></p>
+                                <p>Total satellites tracked: <span id="satellite-count" class="font-roboto-mono-bold">0</span></p>
+                            </div>
+                        </div>
 
-                    <!-- Default Info Text -->
-                    <div id="default-satellite-info" class="satellite-info active">
-                        <p class="text-justify mb-5">
-                            This interactive globe shows simulates the real positions of various satellites orbiting Earth that I worked with.
-                        </p>
-                        <p class="text-justify mb-5">
-                            You can <span style="color: #9061fa">play</span> around with the globe: click on any satellite to learn more about its mission and my contribution to it.
-                        </p>
-                        <p>
-                            Please be aware that this might not work on mobile devices!
-                        </p>
-                        <div class="text-sm text-gray-500" style="margin-top: 10px">
-                            <p id="time-log" class="font-roboto-mono-bold"></p>
-                            <p>Total satellites tracked: <span id="satellite-count" class="font-roboto-mono-bold">0</span></p>
+                        <!-- Dynamic Satellite Info (hidden by default) -->
+                        <div id="satellite-details" class="satellite-info hidden">
+                            <h2 id="satellite-name" class="text-xl font-poppins-bold mb-3"></h2>
+                            <div id="satellite-description" class="text-justify mb-3"></div>
+                            <div id="satellite-specs" class="font-roboto-mono-regular">
+                                <p>Altitude: <span id="satellite-altitude"></span></p>
+                                <p>Velocity: <span id="satellite-velocity"></span></p>
+                                <p>Period: <span id="satellite-period"></span></p>
+                            </div>
                         </div>
                     </div>
-
-                    <!-- Dynamic Satellite Info (hidden by default) -->
-                    <div id="satellite-details" class="satellite-info hidden">
-                        <h2 id="satellite-name" class="text-xl font-poppins-bold mb-3"></h2>
-                        <div id="satellite-description" class="text-justify mb-3"></div>
-                        <div id="satellite-specs" class="font-roboto-mono-regular">
-                            <p>Altitude: <span id="satellite-altitude"></span></p>
-                            <p>Velocity: <span id="satellite-velocity"></span></p>
-                            <p>Period: <span id="satellite-period"></span></p>
-                        </div>
-                    </div>
-                </div>
 
                 <!-- Right Column - Globe -->
-                <div class="flex-1 h-[600px] w-full relative" data-aos="fade-left">
-                    <div id="globeViz" class="w-full h-full absolute inset-0"></div>
+                <div class="w-full lg:w-1/2 overflow-visible" data-aos="fade-left">
+                    <div id="globeViz" class="w-full overflow-visible"></div>
                 </div>
+            </div>
             </section>
             <!-- SATELLITES -->
 
