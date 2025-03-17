@@ -94,8 +94,59 @@
 
         .tag-list li {
             /* This modifies the border of the scrolling items */
-            border: 1px solid #9ca3af !important;
+            border: 1px solid #374151 !important;
             background-color: #090d17;
+        }
+
+
+        .satellite-info {
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        .satellite-info.hidden {
+            opacity: 0;
+            transform: translateX(-20px);
+            pointer-events: none;
+        }
+
+        .satellite-info.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .info-enter {
+            animation: slideIn 0.3s ease-in-out forwards;
+        }
+
+        .info-exit {
+            animation: slideOut 0.3s ease-in-out forwards;
+        }
+
+        /* Add smooth transition for content updates */
+        #satellite-details {
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
         }
     </style>
 </head>
@@ -224,7 +275,7 @@
                             </a>
                         </div>
                         <!-- <div class="flex gap-3 xl:gap-5 items-center mt-2">
-                            <button class="mybtn py-2 h-10 flex gap-1 items-center justify-center text-center 
+                            <button class="mybtn py-2 h-10 flex gap-1 items-center justify-center text-center
                                  hover:scale-105 px-5 select-none w-full">
                                 <span></span>
                                 <span></span>
@@ -404,21 +455,21 @@
             <section class="mt-2 mb-2 relative" id="satellites">
                 <div class="flex flex-col xl:flex-row items-center py-5 px-5 relative">
                     <!-- Left Column - Information -->
-                    <div class="min-w-1/2 p-5" data-aos="fade-right">
+                    <div class="min-w-1/2 p-5 h-[500px]" data-aos="fade-right">
                         <h1 class="font-poppins-black text-2xl md:text-4xl mb-5">
                             MY <span class="text-border text-gray-300" style="-webkit-text-stroke: 1px #9061fa">SATELLITES</span>
                         </h1>
 
                         <!-- Default Info Text -->
-                        <div id="default-satellite-info" class="satellite-info active w-full">
+                        <div id="default-satellite-info" class="satellite-info active w-full h-[400px] overflow-y-auto">
                             <p class="text-justify mb-5">
                                 This interactive globe shows simulates the real positions of various satellites orbiting Earth that I worked with.
                             </p>
                             <p class="text-justify mb-5">
                                 You can <span style="color: #9061fa">play</span> around with the globe: click on any satellite to learn more about its mission and my contribution to it.
                             </p>
-                            <p>
-                                Please be aware that this might not work on mobile devices!
+                            <p class="text-justify mb-5">
+                                Please visit from desktop for a better experience!
                             </p>
                             <div class="text-sm text-gray-500" style="margin-top: 10px">
                                 <p id="time-log" class="font-roboto-mono-bold"></p>
@@ -427,7 +478,7 @@
                         </div>
 
                         <!-- Dynamic Satellite Info (hidden by default) -->
-                        <div id="satellite-details" class="satellite-info hidden">
+                        <div id="satellite-details" class="satellite-info hidden h-[400px] overflow-y-auto">
                             <h2 id="satellite-name" class="text-xl font-poppins-bold mb-3"></h2>
                             <div id="satellite-description" class="text-justify mb-3"></div>
                             <div id="satellite-specs" class="font-roboto-mono-regular">
@@ -594,7 +645,7 @@
 
             <!-- Contact -->
             <section class="flex mt-2 mb-2 flex-col items-center justify-center py-5 px-5 relative overflow-hidden"
-                data-aos="zoom-in" id="contact">
+                     data-aos="zoom-in" id="contact">
                 <h1 class=" font-poppins-black text-2xl md:text-4xl mb-10" data-aos="fade-up"><span class=" text-border text-gray-300" style="-webkit-text-stroke: 1px #9061fa">CONTACT</span> ME
                 </h1>
                 <div class="w-full py-2 px-2">
@@ -602,10 +653,26 @@
                         <p class="text-gray-400 mb-4">
                             Feel free to reach out! I'm always interested in new opportunities and connections.
                         </p>
-                        <a href="mailto:ruaromatteo@gmail.com?body=Cool website! 🤟"
-                           class="inline-block w-full text-gray-900 bg-gray-300 py-2 rounded-lg hover:bg-gray-700 transition">
-                            <i class="fa-solid fa-envelope mr-2"></i>Send me an email
-                        </a>
+                        <div class="flex flex-col gap-4">
+                            <a href="mailto:ruaromatteo@gmail.com?body=Cool website! 🤟"
+                               class="w-full text-gray-900 bg-gray-300 py-2 rounded-lg hover:bg-gray-700 transition">
+                                <i class="fa-solid fa-envelope mr-2"></i>Send me an email
+                            </a>
+                            <div class="flex flex-col lg:flex-row gap-4">
+                                <a href="https://www.linkedin.com/in/matteo-ruaro/"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="w-full lg:w-1/2 text-gray-900 bg-gray-300 py-2 rounded-lg hover:bg-gray-700 transition">
+                                    <i class="fa-brands fa-linkedin mr-2"></i>Connect with me on LinkedIn
+                                </a>
+                                <a href="https://ig.me/m/keelhauler95/"
+                                   target="_blank"
+                                   rel="noopener noreferrer"
+                                   class="w-full lg:w-1/2 text-gray-900 bg-gray-300 py-2 rounded-lg hover:bg-gray-700 transition">
+                                    <i class="fa-brands fa-instagram mr-2"></i>DM me on Instagram
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>

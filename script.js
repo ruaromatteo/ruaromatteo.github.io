@@ -185,7 +185,7 @@ const spacecraftDatabase = {
         operator: "ESA",
         operatorLogo: "assets/images/spacecrafts/agencies/ESA.png",
         partnerLogos: [
-            { name: "Jaxa", logo: "assets/images/spacecrafts/agencies/Jaxa.png" },
+            {name: "Jaxa", logo: "assets/images/spacecrafts/agencies/Jaxa.png"},
         ],
         launcher: "Falcon 9 Block 5",
         launchDate: "28 May 2024",
@@ -202,8 +202,8 @@ const spacecraftDatabase = {
         operator: "ESA",
         operatorLogo: "assets/images/spacecrafts/agencies/EUMETSAT.png",
         partnerLogos: [
-            { name: "ESA", logo: "assets/images/spacecrafts/agencies/ESA.png" },
-            { name: "NOAA", logo: "assets/images/spacecrafts/agencies/NOAA.png" },
+            {name: "ESA", logo: "assets/images/spacecrafts/agencies/ESA.png"},
+            {name: "NOAA", logo: "assets/images/spacecrafts/agencies/NOAA.png"},
         ],
         launcher: "Sojuz 2",
         launchDate: "19 Oct 2006",
@@ -220,8 +220,8 @@ const spacecraftDatabase = {
         operator: "ESA",
         operatorLogo: "assets/images/spacecrafts/agencies/EUMETSAT.png",
         partnerLogos: [
-            { name: "ESA", logo: "assets/images/spacecrafts/agencies/ESA.png" },
-            { name: "NOAA", logo: "assets/images/spacecrafts/agencies/NOAA.png" },
+            {name: "ESA", logo: "assets/images/spacecrafts/agencies/ESA.png"},
+            {name: "NOAA", logo: "assets/images/spacecrafts/agencies/NOAA.png"},
         ],
         launcher: "Sojuz 2",
         launchDate: "17 Sep 2012",
@@ -238,8 +238,8 @@ const spacecraftDatabase = {
         operator: "ESA",
         operatorLogo: "assets/images/spacecrafts/agencies/EUMETSAT.png",
         partnerLogos: [
-            { name: "ESA", logo: "assets/images/spacecrafts/agencies/ESA.png" },
-            { name: "NOAA", logo: "assets/images/spacecrafts/agencies/NOAA.png" },
+            {name: "ESA", logo: "assets/images/spacecrafts/agencies/ESA.png"},
+            {name: "NOAA", logo: "assets/images/spacecrafts/agencies/NOAA.png"},
         ],
         launcher: "Sojuz 2",
         launchDate: "7 Nov 2018",
@@ -250,6 +250,67 @@ const spacecraftDatabase = {
         imageUrl: "assets/images/spacecrafts/satellite/METOP.png"
     },
 };
+
+function showSatelliteDetails(newDetailsHTML) {
+    const defaultInfo = document.getElementById('default-satellite-info');
+    const satelliteDetails = document.getElementById('satellite-details');
+
+    // If satellite details are already showing, animate them out first
+    if (!satelliteDetails.classList.contains('hidden')) {
+        satelliteDetails.classList.add('info-exit');
+
+        setTimeout(() => {
+            // Update content
+            satelliteDetails.innerHTML = newDetailsHTML;
+
+            // Trigger new animation
+            satelliteDetails.classList.remove('info-exit');
+            satelliteDetails.classList.add('info-enter');
+
+            setTimeout(() => {
+                satelliteDetails.classList.remove('info-enter');
+            }, 300);
+        }, 300);
+    } else {
+        // Original behavior when coming from default info
+        defaultInfo.classList.add('info-exit');
+
+        setTimeout(() => {
+            defaultInfo.classList.add('hidden');
+            defaultInfo.classList.remove('info-exit');
+
+            // Update content and show satellite details
+            satelliteDetails.innerHTML = newDetailsHTML;
+            satelliteDetails.classList.remove('hidden');
+            satelliteDetails.classList.add('info-enter');
+
+            setTimeout(() => {
+                satelliteDetails.classList.remove('info-enter');
+            }, 300);
+        }, 300);
+    }
+}
+
+function closeSatelliteDetails() {
+    const defaultInfo = document.getElementById('default-satellite-info');
+    const satelliteDetails = document.getElementById('satellite-details');
+
+    // Hide satellite details with animation
+    satelliteDetails.classList.add('info-exit');
+
+    setTimeout(() => {
+        satelliteDetails.classList.add('hidden');
+        satelliteDetails.classList.remove('info-exit');
+
+        // Show default info with animation
+        defaultInfo.classList.remove('hidden');
+        defaultInfo.classList.add('info-enter');
+
+        setTimeout(() => {
+            defaultInfo.classList.remove('info-enter');
+        }, 300);
+    }, 300);
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     const EARTH_RADIUS_KM = 6371;
@@ -317,11 +378,12 @@ document.addEventListener('DOMContentLoaded', () => {
         .objectLabel(d => d.name)
         .objectFacesSurface(false) // Don't rotate objects to face the surface
         .onObjectClick((obj, event, coords) => {
+
             const defaultInfo = document.getElementById('default-satellite-info');
             const satelliteDetails = document.getElementById('satellite-details');
 
-            defaultInfo.classList.add('hidden');
-            satelliteDetails.classList.remove('hidden');
+            //defaultInfo.classList.add('hidden');
+            //satelliteDetails.classList.remove('hidden');
 
             const spacecraft = spacecraftDatabase[obj.name] || {
                 description: "Spacecraft details not available",
@@ -336,82 +398,93 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Update the HTML with spacecraft information
             const detailsHTML = `
-    <div class="spacecraft-details p-4">
-        <div class=" flex gap-2 text-base md:text-xl xl:text-2xl font-poppins-semibold items-center mb-2">
-            <h2>${spacecraft.name}</h2>
-        </div>
-        <!-- Top Section: Logos -->
-<div class="flex justify-between mb-4">
-    <!-- Left: Mission Logo -->
-    <div class="mr-2 bg-white p-2 rounded-lg" style="padding: 2px">
-        <img src="${spacecraft.imageUrl}" alt="${obj.name}" 
-             style="height: 64px; width: auto;" class="object-contain">
-    </div>
-    
-    <!-- Right: Operator and Partners -->
-    <div class="bg-white p-2 rounded-lg" style="padding: 2px">
-        <!-- Top: Operator Logo -->
-        <div class="flex justify-end mb-1">
-            <img src="${spacecraft.operatorLogo}" alt="${spacecraft.operator}" 
-                 style="height: 32px; width: auto;" class="object-contain">
-        </div>
-        <!-- Bottom: Partner Logos -->
-        <div class="flex justify-start gap-2">
-            ${spacecraft.partnerLogos ? spacecraft.partnerLogos.map(partner =>
-                `<img src="${partner.logo}" alt="${partner.name}" 
-                      style="height: 28px; width: auto;" class="object-contain">`
-            ).join('') : ''}
-        </div>
-    </div>
-</div>
+                <div class="spacecraft-details p-4">
+                
+                    <!-- Close button -->
+                    <div class="flex justify-end" style="margin-bottom: -30px">
+                        <button onclick="closeSatelliteDetails()" 
+                                class="text-gray-500 hover:text-gray-700 transition-colors"
+                                aria-label="Close details">
+                            <i class="fa-solid fa-times"></i>
+                        </button>
+                    </div>
+                
+                    <div class=" flex gap-2 text-base md:text-xl xl:text-2xl font-poppins-semibold items-center mb-2">
+                        <h2>${spacecraft.name}</h2>
+                    </div>
+                    
+                    <!-- Top Section: Logos -->
+                    <div class="flex justify-between mb-4">
+                        <!-- Left: Mission Logo -->
+                        <div class="mr-2 bg-white p-2 rounded-lg" style="padding: 2px">
+                            <img src="${spacecraft.imageUrl}" alt="${obj.name}" 
+                                 style="height: 64px; width: auto;" class="object-contain">
+                        </div>
+                        
+                        <!-- Right: Operator and Partners -->
+                        <div class="bg-white p-2 rounded-lg" style="padding: 2px">
+                            <!-- Top: Operator Logo -->
+                            <div class="flex justify-end mb-1">
+                                <img src="${spacecraft.operatorLogo}" alt="${spacecraft.operator}" 
+                                     style="height: 32px; width: auto;" class="object-contain">
+                            </div>
+                            <!-- Bottom: Partner Logos -->
+                            <div class="flex justify-start gap-2">
+                                ${spacecraft.partnerLogos ? spacecraft.partnerLogos.map(partner =>
+                                    `<img src="${partner.logo}" alt="${partner.name}" 
+                                          style="height: 28px; width: auto;" class="object-contain">`
+                                ).join('') : ''}
+                            </div>
+                        </div>
+                    </div>
+            
+                    <div class="flex text-sm mb-2">
+                        <div class="whitespace-nowrap mr-10">
+                            <span class="text-gray-500">Launched on: </span>
+                            <span class="font-semibold ml-1">${spacecraft.launchDate}</span>
+                        </div>
+                        <div class="whitespace-nowrap mr-10">
+                            <span class="text-gray-500">Launcher: </span>
+                            <span class="font-semibold ml-1">${spacecraft.launcher || 'Unknown'}</span>
+                        </div>
+                    </div>
+            
+                    <div class="flex mb-1 text-sm">
+                        <div class="whitespace-nowrap mr-10">
+                            <span class="text-gray-500">Altitude: </span>
+                            <span class="font-semibold ml-1">${spacecraft.apogee || 'N/A'}</span>
+                        </div>
+                        <div class="whitespace-nowrap mr-10">
+                            <span class="text-gray-500">Period: </span>
+                            <span class="font-semibold ml-1">${spacecraft.period || 'N/A'}</span>
+                        </div>
+                        <div class="whitespace-nowrap mr-10">
+                            <span class="text-gray-500">Inclination: </span>
+                            <span class="font-semibold ml-1">${spacecraft.inclination || 'N/A'}</span>
+                        </div>
+                    </div>
+            
+                    <div class="mb-1 text-sm border-b border-gray-200 dark:border-gray-700 py-2">
+                        <span class="text-gray-500">Description: </span>
+                        <p class="mt-1">${spacecraft.description || 'N/A'}</p>
+                    </div>
+            
+                    <div class="mb-1 text-sm border-b border-gray-200 dark:border-gray-700 py-2">
+                        <span class="text-gray-500">My contribution: </span>
+                        <p class="mt-1">${spacecraft.myContribution || 'N/A'}</p>
+                    </div>
+            
+                    <div class="flex justify-end pt-2" style="color: #9061fa">
+                        <a href="${spacecraft.moreInfo}" 
+                           target="_blank" 
+                           class="text-sm text-purple-600 hover:text-purple-800 flex items-center gap-1">
+                           Learn More <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            `;
 
-        <div class="flex text-sm mb-2">
-            <div class="whitespace-nowrap mr-10">
-                <span class="text-gray-500">Launched on: </span>
-                <span class="font-semibold ml-1">${spacecraft.launchDate}</span>
-            </div>
-            <div class="whitespace-nowrap mr-10">
-                <span class="text-gray-500">Launcher: </span>
-                <span class="font-semibold ml-1">${spacecraft.launcher || 'Unknown'}</span>
-            </div>
-        </div>
-
-        <div class="flex mb-1 text-sm">
-            <div class="whitespace-nowrap mr-10">
-                <span class="text-gray-500">Altitude: </span>
-                <span class="font-semibold ml-1">${spacecraft.apogee || 'N/A'}</span>
-            </div>
-            <div class="whitespace-nowrap mr-10">
-                <span class="text-gray-500">Period: </span>
-                <span class="font-semibold ml-1">${spacecraft.period || 'N/A'}</span>
-            </div>
-            <div class="whitespace-nowrap mr-10">
-                <span class="text-gray-500">Inclination: </span>
-                <span class="font-semibold ml-1">${spacecraft.inclination || 'N/A'}</span>
-            </div>
-        </div>
-
-        <div class="mb-1 text-sm border-b border-gray-200 dark:border-gray-700 py-2">
-            <span class="text-gray-500">Description: </span>
-            <p class="mt-1">${spacecraft.description || 'N/A'}</p>
-        </div>
-
-        <div class="mb-1 text-sm border-b border-gray-200 dark:border-gray-700 py-2">
-            <span class="text-gray-500">My contribution: </span>
-            <p class="mt-1">${spacecraft.myContribution || 'N/A'}</p>
-        </div>
-
-        <div class="flex justify-end pt-2" style="color: #9061fa">
-            <a href="${spacecraft.moreInfo}" 
-               target="_blank" 
-               class="text-sm text-purple-600 hover:text-purple-800 flex items-center gap-1">
-               Learn More <i class="fa-solid fa-arrow-right"></i>
-            </a>
-        </div>
-    </div>
-`;
-
-            satelliteDetails.innerHTML = detailsHTML;
+            showSatelliteDetails(detailsHTML);
 
             // Update orbital parameters
             const altitudeKm = Math.round(obj.alt * 6371);
@@ -441,8 +514,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Adjust initial view
-    myGlobe.pointOfView({ altitude: 1.5 });
-    setTimeout(() => myGlobe.pointOfView({ altitude: 2 }));
+    myGlobe.pointOfView({altitude: 1.5});
+    setTimeout(() => myGlobe.pointOfView({altitude: 2}));
 
     fetch('./assets/datasets/spacecrafts.tle').then(r => r.text()).then(rawData => {
         const tleData = rawData.replace(/\r/g, '')
@@ -482,6 +555,8 @@ document.addEventListener('DOMContentLoaded', () => {
             myGlobe
                 .objectsData(satData.filter(d => !isNaN(d.lat) && !isNaN(d.lng) && !isNaN(d.alt)));
         })();
+
+        window.closeSatelliteDetails = closeSatelliteDetails;
     });
 
     // Responsive handling
