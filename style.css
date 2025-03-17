@@ -2104,7 +2104,7 @@ body {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+@media {
   .dark\:inline {
     display: inline;
   }
