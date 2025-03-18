@@ -324,6 +324,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const containerWidth = globeContainer.clientWidth;
     const containerHeight = globeContainer.clientHeight;
 
+    const MAX_PATH_LENGTH = 400;
+
     const myGlobe = new Globe(globeContainer)
         // .width(containerWidth)
         // .height(containerHeight)
@@ -416,13 +418,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     <!-- Top Section: Logos -->
                     <div class="flex justify-between mb-4">
                         <!-- Left: Mission Logo -->
-                        <div class="mr-2 bg-white p-2 rounded-lg" style="padding: 2px">
+                        <div class="mr-2 bg-white p-2 rounded-lg" style="padding: 2px; background-color: white;">
                             <img src="${spacecraft.imageUrl}" alt="${obj.name}" 
                                  style="height: 64px; width: auto;" class="object-contain">
                         </div>
                         
                         <!-- Right: Operator and Partners -->
-                        <div class="bg-white p-2 rounded-lg" style="padding: 2px">
+                        <div class="bg-white p-2 rounded-lg" style="padding: 2px; background-color: white;">
                             <!-- Top: Operator Logo -->
                             <div class="flex justify-end mb-1">
                                 <img src="${spacecraft.operatorLogo}" alt="${spacecraft.operator}" 
@@ -492,26 +494,43 @@ document.addEventListener('DOMContentLoaded', () => {
             const semiMajorAxis = 6371 + altitudeKm;
             const period = Math.round((2 * Math.PI * Math.sqrt(Math.pow(semiMajorAxis, 3) / mu)) / 60);
 
-        });
+        })
+        .pathsData([])
+        .pathPointAlt(pnt => pnt[2])
+        .pathTransitionDuration(0)
+        .pathColor(() => ['rgba(144,97,250,0)', 'rgba(144,97,250,0.6)']); // Initialize empty paths
 
-    // Disable zoom and set auto-rotation
+    // Add clouds sphere
+    // const CLOUDS_IMG_URL = './assets/images/clouds_purple2.png'; // from https://github.com/turban/webgl-earth
+    // const CLOUDS_ALT = 0.004;
+    // const CLOUDS_ROTATION_SPEED = -0.03; // deg/frame
+    // new THREE.TextureLoader().load(CLOUDS_IMG_URL, cloudsTexture => {
+    //     const clouds = new THREE.Mesh(
+    //         new THREE.SphereGeometry(myGlobe.getGlobeRadius() * (1 + CLOUDS_ALT), 75, 75),
+    //         new THREE.MeshPhongMaterial({
+    //             map: cloudsTexture,
+    //             transparent: true,
+    //             opacity: 0.2,
+    //         })
+    //     );
+    //     myGlobe.scene().add(clouds);
+    //
+    //     (function rotateClouds() {
+    //         clouds.rotation.y += CLOUDS_ROTATION_SPEED * Math.PI / 180;
+    //         requestAnimationFrame(rotateClouds);
+    //     })();
+    // });
+
+    // Disable zoom and set autorotation
     myGlobe.controls().enableZoom = false;
     myGlobe.controls().autoRotate = true;
     myGlobe.controls().autoRotateSpeed = 0.7;
+
     // Create purple ambient light
     const ambientLight = new THREE.AmbientLight(0x9061fa, 3); // Using your purple hex code
     const directionalLight = new THREE.DirectionalLight(0xffffff, 5);
     directionalLight.position.set(1, 1, 1);
     myGlobe.lights([ambientLight, directionalLight]);
-
-    // Add click handler for globe background to reset info display
-    globeContainer.addEventListener('click', (event) => {
-        // Check if click was on the globe background (not on a satellite)
-        if (event.target === globeContainer) {
-            document.getElementById('default-satellite-info').classList.remove('hidden');
-            document.getElementById('satellite-details').classList.add('hidden');
-        }
-    });
 
     // Adjust initial view
     myGlobe.pointOfView({altitude: 1.5});
@@ -545,15 +564,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 const eci = satellite.propagate(d.satrec, time);
                 if (eci.position) {
                     const gdPos = satellite.eciToGeodetic(eci.position, gmst);
+                    // First update the current position
                     d.lat = satellite.radiansToDegrees(gdPos.latitude);
                     d.lng = satellite.radiansToDegrees(gdPos.longitude);
                     d.alt = gdPos.height / EARTH_RADIUS_KM;
 
+                    // Then store exactly the same values in the path
+                    const currentPoint = [d.lat, d.lng, d.alt];
+                    d.path.push(currentPoint);
+
+                    // Keep only the last MAX_PATH_LENGTH positions
+                    if (d.path.length > MAX_PATH_LENGTH) {
+                        d.path.shift();
+                    }
                 }
             });
 
+            // Update both objects and paths
             myGlobe
-                .objectsData(satData.filter(d => !isNaN(d.lat) && !isNaN(d.lng) && !isNaN(d.alt)));
+                .objectsData(satData.filter(d => !isNaN(d.lat) && !isNaN(d.lng) && !isNaN(d.alt)))
+                .pathsData(satData.filter(d => d.path.length > 1).map(d => d.path));
         })();
 
         window.closeSatelliteDetails = closeSatelliteDetails;
