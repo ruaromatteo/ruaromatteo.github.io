@@ -178,6 +178,21 @@ if (typeof ApexCharts !== "undefined") {
 
 // GLOBE
 const spacecraftDatabase = {
+    "BIOMASS": {
+        name: "Biomass",
+        description: "It is part of ESA's Earth Explorer Programme. The mission will provide the first comprehensive measurements of global forest biomass and is expected to significantly improve the understanding of carbon storage, forest health, and temporal changes of forest ecosystems.",
+        myContribution: "I am currently an Operations Engineer on its Flight Control Team at ESA. I participated Launch and commissioning phases. Now I take care of its routine operations.",
+        operator: "ESA",
+        operatorLogo: "assets/images/spacecrafts/agencies/ESA.png",
+        partnerLogos: [],
+        launcher: "Vega C",
+        launchDate: "29 April 2025",
+        apogee: "666 km",
+        period: "98.1 min",
+        inclination: "98.1°",
+        moreInfo: "https://www.esa.int/Applications/Observing_the_Earth/FutureEO/Biomass",
+        imageUrl: "assets/images/spacecrafts/satellite/BIOMASS.png"
+    },
     "EARTHCARE": {
         name: "EarthCARE",
         description: "It is part of ESA's Earth Explorer Programme. The main goal of the mission is the observation and characterization of clouds and aerosols as well as measuring the reflected solar radiation and the infrared radiation emitted from Earth's surface and atmosphere.",
