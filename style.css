@@ -1380,144 +1380,46 @@ video {
   }
 
   to {
-    content: "awk '{print $1, $NF}' ~/skills.log";
+    content: "python manage_learning.py --experiment";
   }
 
-  1.75% {
-    content: "a";
-  }
-
-  4.64% {
-    content: "aw";
-  }
-
-  6.49% {
-    content: "awk";
-  }
-
-  8.7% {
-    content: "awk ";
-  }
-
-  10.59% {
-    content: "awk '";
-  }
-
-  13.05% {
-    content: "awk '{";
-  }
-
-  14.48% {
-    content: "awk '{p";
-  }
-
-  17.39% {
-    content: "awk '{pr";
-  }
-
-  18.6% {
-    content: "awk '{pri";
-  }
-
-  20.76% {
-    content: "awk '{prin";
-  }
-
-  22.87% {
-    content: "awk '{print";
-  }
-
-  25.1% {
-    content: "awk '{print ";
-  }
-
-  27.39% {
-    content: "awk '{print $";
-  }
-
-  29.11% {
-    content: "awk '{print $1";
-  }
-
-  31.47% {
-    content: "awk '{print $1,";
-  }
-
-  33.4% {
-    content: "awk '{print $1, ";
-  }
-
-  35.9% {
-    content: "awk '{print $1, $";
-  }
-
-  38.33% {
-    content: "awk '{print $1, $N";
-  }
-
-  40.03% {
-    content: "awk '{print $1, $NF";
-  }
-
-  42% {
-    content: "awk '{print $1, $NF}";
-  }
-
-  44.09% {
-    content: "awk '{print $1, $NF}'";
-  }
-
-  46.07% {
-    content: "awk '{print $1, $NF}' ";
-  }
-
-  48.47% {
-    content: "awk '{print $1, $NF}' ~";
-  }
-
-  50.95% {
-    content: "awk '{print $1, $NF}' ~/";
-  }
-
-  53.06% {
-    content: "awk '{print $1, $NF}' ~/s";
-  }
-
-  55.03% {
-    content: "awk '{print $1, $NF}' ~/sk";
-  }
-
-  57.44% {
-    content: "awk '{print $1, $NF}' ~/ski";
-  }
-
-  59% {
-    content: "awk '{print $1, $NF}' ~/skil";
-  }
-
-  61.52% {
-    content: "awk '{print $1, $NF}' ~/skill";
-  }
-
-  62.99% {
-    content: "awk '{print $1, $NF}' ~/skills";
-  }
-
-  65.18% {
-    content: "awk '{print $1, $NF}' ~/skills.";
-  }
-
-  67.62% {
-    content: "awk '{print $1, $NF}' ~/skills.l";
-  }
-
-  70.19% {
-    content: "awk '{print $1, $NF}' ~/skills.lo";
-  }
-
-  71.4%, 99.57% {
-    content: "awk '{print $1, $NF}' ~/skills.log";
-  }
+  2.56% { content: "p"; }
+  5.13% { content: "py"; }
+  7.69% { content: "pyt"; }
+  10.26% { content: "pyth"; }
+  12.82% { content: "pytho"; }
+  15.38% { content: "python"; }
+  17.95% { content: "python "; }
+  20.51% { content: "python m"; }
+  23.08% { content: "python ma"; }
+  25.64% { content: "python man"; }
+  28.21% { content: "python mana"; }
+  30.77% { content: "python manag"; }
+  33.33% { content: "python manage"; }
+  35.90% { content: "python manage_"; }
+  38.46% { content: "python manage_l"; }
+  41.03% { content: "python manage_le"; }
+  43.59% { content: "python manage_lea"; }
+  46.15% { content: "python manage_lear"; }
+  48.72% { content: "python manage_learn"; }
+  51.28% { content: "python manage_learni"; }
+  53.85% { content: "python manage_learnin"; }
+  56.41% { content: "python manage_learning"; }
+  58.97% { content: "python manage_learning."; }
+  61.54% { content: "python manage_learning.p"; }
+  64.10% { content: "python manage_learning.py"; }
+  66.67% { content: "python manage_learning.py "; }
+  69.23% { content: "python manage_learning.py -"; }
+  71.79% { content: "python manage_learning.py --"; }
+  74.36% { content: "python manage_learning.py --e"; }
+  76.92% { content: "python manage_learning.py --ex"; }
+  79.49% { content: "python manage_learning.py --exp"; }
+  82.05% { content: "python manage_learning.py --expe"; }
+  84.62% { content: "python manage_learning.py --exper"; }
+  87.18% { content: "python manage_learning.py --experi"; }
+  89.74% { content: "python manage_learning.py --experim"; }
+  92.31% { content: "python manage_learning.py --experime"; }
+  94.87%, 99.57% { content: "python manage_learning.py --experiment"; }
 }
 
 @keyframes write-tools {
@@ -1526,92 +1428,41 @@ video {
   }
 
   to {
-    content: "ls ~/tools/ | sort -n";
+    content: "toolset --try --iterate --improve";
   }
 
-  2.59% {
-    content: "l";
-  }
-
-  5.58% {
-    content: "ls";
-  }
-
-  8.48% {
-    content: "ls ";
-  }
-
-  11.53% {
-    content: "ls ~";
-  }
-
-  14.59% {
-    content: "ls ~/";
-  }
-
-  17.25% {
-    content: "ls ~/t";
-  }
-
-  20.05% {
-    content: "ls ~/to";
-  }
-
-  23.74% {
-    content: "ls ~/too";
-  }
-
-  26.47% {
-    content: "ls ~/tool";
-  }
-
-  29.18% {
-    content: "ls ~/tools";
-  }
-
-  31.89% {
-    content: "ls ~/tools/";
-  }
-
-  34.58% {
-    content: "ls ~/tools/ ";
-  }
-
-  37.86% {
-    content: "ls ~/tools/ |";
-  }
-
-  40.64% {
-    content: "ls ~/tools/ | ";
-  }
-
-  44.19% {
-    content: "ls ~/tools/ | s";
-  }
-
-  46.86% {
-    content: "ls ~/tools/ | so";
-  }
-
-  49.12% {
-    content: "ls ~/tools/ | sor";
-  }
-
-  52.55% {
-    content: "ls ~/tools/ | sort";
-  }
-
-  55.62% {
-    content: "ls ~/tools/ | sort ";
-  }
-
-  57.76% {
-    content: "ls ~/tools/ | sort -";
-  }
-
-  60.83%, 99.67% {
-    content: "ls ~/tools/ | sort -n";
-  }
+  2.94% { content: "t"; }
+  5.88% { content: "to"; }
+  8.82% { content: "too"; }
+  11.76% { content: "tool"; }
+  14.71% { content: "tools"; }
+  17.65% { content: "toolse"; }
+  20.59% { content: "toolset"; }
+  23.53% { content: "toolset "; }
+  26.47% { content: "toolset -"; }
+  29.41% { content: "toolset --"; }
+  32.35% { content: "toolset --t"; }
+  35.29% { content: "toolset --tr"; }
+  38.24% { content: "toolset --try"; }
+  41.18% { content: "toolset --try "; }
+  44.12% { content: "toolset --try -"; }
+  47.06% { content: "toolset --try --"; }
+  50.00% { content: "toolset --try --i"; }
+  52.94% { content: "toolset --try --it"; }
+  55.88% { content: "toolset --try --ite"; }
+  58.82% { content: "toolset --try --iter"; }
+  61.76% { content: "toolset --try --itera"; }
+  64.71% { content: "toolset --try --iterat"; }
+  67.65% { content: "toolset --try --iterate"; }
+  70.59% { content: "toolset --try --iterate "; }
+  73.53% { content: "toolset --try --iterate -"; }
+  76.47% { content: "toolset --try --iterate --"; }
+  79.41% { content: "toolset --try --iterate --i"; }
+  82.35% { content: "toolset --try --iterate --im"; }
+  85.29% { content: "toolset --try --iterate --imp"; }
+  88.24% { content: "toolset --try --iterate --impr"; }
+  91.18% { content: "toolset --try --iterate --impro"; }
+  94.12%, 99.67% { content: "toolset --try --iterate --improve"; }
 }
 
 .type-whoami::after {
@@ -1759,6 +1610,30 @@ body {
   --tw-scale-x: 1;
   --tw-scale-y: 1;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.group:hover .group-hover\:scale-110 {
+  --tw-scale-x: 1.1;
+  --tw-scale-y: 1.1;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.project-card img {
+  transform: scale(1);
+  transition: transform 300ms;
+}
+
+.project-card:hover img {
+  transform: scale(1.1);
+}
+
+.armadillo-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0 0.25rem;
+  filter: invert(1) brightness(1.2);
 }
 
 @media (min-width: 768px) {
@@ -1922,4 +1797,88 @@ body {
     background-color: rgb(17 24 39 / var(--tw-bg-opacity, 1));
   }
 }
+
+/* Blob morphing and rotation for hero with starry background */
+.blob {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: auto;
+  max-width: 800px;
+  aspect-ratio: 1 / 1;
+  background-image: url('./assets/images/night-sky.png');
+  background-color: #000000;
+  background-blend-mode: normal;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  pointer-events: none;
+  z-index: 0;
+  transform: translate(-50%, -50%) rotate(0deg);
+  animation: blob-morph 14s linear infinite;
+  opacity: 1;
+  filter: brightness(1.05) contrast(1.1);
+  -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 55%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%);
+  mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 55%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%);
+}
+
+@keyframes blob-morph {
+  0% {
+    border-radius: 58% 42% 33% 67% / 54% 36% 64% 46%;
+    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+  }
+
+  33% {
+    border-radius: 40% 60% 52% 48% / 50% 60% 40% 50%;
+    transform: translate(-50%, -50%) rotate(120deg) scale(1.03);
+  }
+
+  66% {
+    border-radius: 62% 38% 45% 55% / 42% 58% 32% 68%;
+    transform: translate(-50%, -50%) rotate(240deg) scale(0.98);
+  }
+
+  100% {
+    border-radius: 58% 42% 33% 67% / 54% 36% 64% 46%;
+    transform: translate(-50%, -50%) rotate(360deg) scale(1);
+  }
+}
+
+.hero-img-z { z-index: 10; }
+
+/* Armadillo floating in space - continuous, organic, weightless */
+.floating {
+  animation: spaceFloat 25s linear infinite;
+}
+
+@keyframes spaceFloat {
+  0% {
+    transform: translate(-50%, -50%) translateX(0px) translateY(0px) rotate(0deg);
+  }
+  12.5% {
+    transform: translate(-50%, -50%) translateX(6px) translateY(-10px) rotate(1.5deg);
+  }
+  25% {
+    transform: translate(-50%, -50%) translateX(12px) translateY(-6px) rotate(3deg);
+  }
+  37.5% {
+    transform: translate(-50%, -50%) translateX(14px) translateY(8px) rotate(4deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateX(8px) translateY(16px) rotate(2deg);
+  }
+  62.5% {
+    transform: translate(-50%, -50%) translateX(-6px) translateY(14px) rotate(-2deg);
+  }
+  75% {
+    transform: translate(-50%, -50%) translateX(-14px) translateY(4px) rotate(-4deg);
+  }
+  87.5% {
+    transform: translate(-50%, -50%) translateX(-10px) translateY(-8px) rotate(-2deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) translateX(0px) translateY(0px) rotate(0deg);
+  }
+}
+
 

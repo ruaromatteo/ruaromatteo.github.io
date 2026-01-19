@@ -327,9 +327,17 @@ function closeSatelliteDetails() {
     }, 300);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     const EARTH_RADIUS_KM = 6371;
     const TIME_STEP = 2000;
+
+    const TLE_API_BASE = 'https://tle.ivanstanojevic.me/api/tle';
+
+    const THREE = window.THREE || (typeof Globe !== 'undefined' ? Globe.THREE : undefined);
+    if (!THREE) {
+        console.error('THREE is not available. Ensure globe.gl is loaded before script.js.');
+        return;
+    }
 
     const timeLogger = document.getElementById('time-log');
     const satelliteCount = document.getElementById('satellite-count');
@@ -344,8 +352,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const myGlobe = new Globe(globeContainer)
         // .width(containerWidth)
         // .height(containerHeight)
-        .width(Math.min(containerWidth, 500)) // Limit initial width
-        .height(Math.min(containerWidth * 0.75, 375)) // Maintain 4:3 aspect ratio with max height
+        .width(Math.min(containerWidth, 700)) // Limit initial width
+        .height(Math.min(containerWidth * 0.75, 525)) // Maintain 4:3 aspect ratio with max height
         .globeImageUrl('./assets/images/earth_neon_bw_dark.png')
         .globeMaterial(new THREE.MeshPhongMaterial({
             shininess: 0.3,
@@ -551,15 +559,63 @@ document.addEventListener('DOMContentLoaded', () => {
     myGlobe.pointOfView({altitude: 1.5});
     setTimeout(() => myGlobe.pointOfView({altitude: 2}));
 
-    fetch('./assets/datasets/spacecrafts.tle').then(r => r.text()).then(rawData => {
-        const tleData = rawData.replace(/\r/g, '')
-            .split(/\n(?=[^12])/)
-            .filter(d => d)
-            .map(tle => tle.split('\n'));
-
-        const satData = tleData.map(([name, ...tle]) => ({
-            satrec: satellite.twoline2satrec(...tle),
+    const parseTleFile = (rawData) => rawData.replace(/\r/g, '')
+        .split(/\n(?=[^12])/)
+        .filter(d => d)
+        .map(tle => tle.split('\n'))
+        .map(([name, ...tle]) => ({
             name: name.trim().replace(/^0 /, ''),
+            line1: (tle[0] || '').trim(),
+            line2: (tle[1] || '').trim()
+        }))
+        .filter(d => d.line1 && d.line2);
+
+    const getNoradIds = () => {
+        const satellitesSection = document.getElementById('satellites');
+        const rawIds = satellitesSection?.dataset?.noradIds || '';
+        return rawIds
+            .split(',')
+            .map(id => id.trim())
+            .filter(Boolean);
+    };
+
+    const fetchTleFromApi = async (noradId) => {
+        const response = await fetch(`${TLE_API_BASE}/${encodeURIComponent(noradId)}`, { cache: 'no-store' });
+        if (!response.ok) {
+            throw new Error(`TLE API error for ${noradId}: ${response.status}`);
+        }
+        const data = await response.json();
+        return {
+            name: (data.name || '').trim(),
+            line1: (data.line1 || '').trim(),
+            line2: (data.line2 || '').trim()
+        };
+    };
+
+    const loadTles = async () => {
+        const noradIds = getNoradIds();
+        if (noradIds.length) {
+            const results = await Promise.allSettled(noradIds.map(fetchTleFromApi));
+            const tles = results
+                .filter(r => r.status === 'fulfilled')
+                .map(r => r.value)
+                .filter(d => d.line1 && d.line2);
+
+            if (tles.length) {
+                return tles;
+            }
+            console.warn('TLE API returned no valid data. Falling back to local file.');
+        }
+
+        const fallbackText = await fetch('./assets/datasets/spacecrafts.tle').then(r => r.text());
+        return parseTleFile(fallbackText);
+    };
+
+    try {
+        const tleEntries = await loadTles();
+        const satData = tleEntries.map(({ name, line1, line2 }) => ({
+            satrec: satellite.twoline2satrec(line1, line2),
+            name: name.replace(/^0 /, ''),
             path: [] // Store the complete path as single array
         }))
             .filter(d => !!satellite.propagate(d.satrec, new Date()).position);
@@ -602,7 +658,9 @@ document.addEventListener('DOMContentLoaded', () => {
         })();
 
         window.closeSatelliteDetails = closeSatelliteDetails;
-    });
+    } catch (error) {
+        console.error('Failed to load TLE data:', error);
+    }
 
     // Responsive handling
     function updateGlobeSize() {
@@ -611,8 +669,8 @@ document.addEventListener('DOMContentLoaded', () => {
         myGlobe
             // .width(newWidth)
             // .height(newHeight)
-            .width(Math.min(containerWidth, 500)) // Limit initial width
-            .height(Math.min(containerWidth * 0.75, 375)); // Maintain 4:3 aspect ratio with max height
+            .width(Math.min(newWidth, 700)) // Limit width while allowing larger desktop size
+            .height(Math.min(newWidth * 0.75, 525)); // Maintain 4:3 aspect ratio with max height
     }
 
     const resizeObserver = new ResizeObserver(entries => {
