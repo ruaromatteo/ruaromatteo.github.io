@@ -683,4 +683,113 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     resizeObserver.observe(globeContainer);
     window.addEventListener('resize', updateGlobeSize);
+
+    // 🔧 Restart typewriter animations when the ABOUT section or individual items become visible again
+    (function setupTypewriterReplay() {
+        const aboutSection = document.getElementById('about');
+        if (!aboutSection) return;
+
+        function findTypeElements(root = document) {
+            return Array.from(root.querySelectorAll('span')).filter(el =>
+                Array.from(el.classList).some(c => c.startsWith('type-'))
+            );
+        }
+
+        // When the write-... animation finishes, copy the final ::after content into the element
+        // and then mark it done so the caret can be hidden without losing the text.
+        function onWriteAnimationEnd(e) {
+            if (e.animationName && e.animationName.startsWith('write-')) {
+                const el = e.currentTarget;
+
+                try {
+                    const afterContent = getComputedStyle(el, '::after').getPropertyValue('content') || '';
+                    const unquoted = afterContent.replace(/^"(.*)"$/, '$1').replace(/\\"/g, '"');
+                    if (unquoted && unquoted !== '""') {
+                        el.textContent = unquoted;
+                    }
+                } catch (err) {
+                    console.warn('Failed to copy ::after content for typewriter:', err);
+                }
+
+                // per-element finished state
+                el.classList.add('type-done');
+                delete el.dataset.typing;
+            }
+        }
+
+        function attachListeners(el) {
+            // ensure we don't attach multiple listeners
+            el.removeEventListener('animationend', onWriteAnimationEnd);
+            el.addEventListener('animationend', onWriteAnimationEnd);
+        }
+
+        // IntersectionObserver that watches each type element individually
+        // Use per-element cooldown + stagger to avoid simultaneous restarts when multiple
+        // elements enter the viewport together (makes them appear "tied").
+        const STAGGER_MS = 180; // stagger between simultaneous starts
+        const COOLDOWN_MS = 1200; // per-element cooldown to prevent immediate retriggers
+
+        const io = new IntersectionObserver((entries) => {
+            // collect elements that should be restarted this tick
+            const toRestart = [];
+
+            entries.forEach(entry => {
+                const el = entry.target;
+
+                if (entry.isIntersecting) {
+                    const wasVis = el.dataset.wasVisible === 'true';
+                    const last = parseInt(el.dataset.lastRestart || '0', 10);
+                    const now = Date.now();
+
+                    if (!wasVis && (now - last) > COOLDOWN_MS) {
+                        toRestart.push(el);
+                        // mark visible immediately so we don't queue it twice
+                        el.dataset.wasVisible = 'true';
+                    } else {
+                        el.dataset.wasVisible = 'true';
+                    }
+                } else {
+                    el.dataset.wasVisible = 'false';
+                }
+            });
+
+            // perform restarts with a small stagger so they don't all run in lockstep
+            toRestart.forEach((el, idx) => {
+                setTimeout(() => {
+                    // record restart time on the element that will be replaced
+                    try { el.dataset.lastRestart = Date.now(); } catch (e) {}
+                    restartElement(el);
+                }, idx * STAGGER_MS);
+            });
+        }, { threshold: 0.5 });
+
+        function restartElement(el) {
+            // If it's already typing, don't restart
+            if (el.dataset.typing === 'true') return;
+
+            // Stop observing the old node, replace with a fresh clone and observe that
+            io.unobserve(el);
+
+            const clone = el.cloneNode(true);
+            clone.classList.remove('type-done');
+            // clear previous copied text so the ::after animation can rerun
+            clone.textContent = '';
+            // mark as typing so we don't double-restart
+            clone.dataset.typing = 'true';
+            clone.dataset.wasVisible = 'true';
+            attachListeners(clone);
+
+            el.replaceWith(clone);
+            io.observe(clone);
+        }
+
+        // Start observing every type element individually and attach listeners
+        findTypeElements().forEach(el => {
+            attachListeners(el);
+            const r = el.getBoundingClientRect();
+            el.dataset.wasVisible = (r.top < window.innerHeight && r.bottom > 0) ? 'true' : 'false';
+            io.observe(el);
+        });
+    })();
+
 });
