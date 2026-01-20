@@ -1813,13 +1813,55 @@ body {
   background-size: cover;
   background-position: center;
   pointer-events: none;
-  z-index: 0;
+  z-index: 6;
   transform: translate(-50%, -50%) rotate(0deg);
   animation: blob-morph 14s linear infinite;
   opacity: 1;
   filter: brightness(1.05) contrast(1.1);
+  /* ensure glow sits behind the blob but above background */
   -webkit-mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 55%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%);
   mask-image: radial-gradient(circle at center, rgba(0,0,0,1) 30%, rgba(0,0,0,1) 55%, rgba(0,0,0,0.6) 70%, rgba(0,0,0,0.2) 85%, rgba(0,0,0,0) 100%);
+}
+
+/* Glow element for hero blob */
+.blob-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* matches blob size */
+  width: 95%;
+  max-width: 800px;
+  aspect-ratio: 1 / 1;
+  pointer-events: none;
+  z-index: 5;
+  border-radius: 35% 65% 70% 30% / 57% 59% 41% 43%;
+  box-shadow: 0 0 40px rgba(144, 97, 250, 0.8), 0 0 80px rgba(144, 97, 250, 0.45);
+  filter: blur(8px);
+  opacity: 0.95;
+  animation: blob-morph 14s linear infinite;
+}
+
+/* Default blob sizing */
+.blob {
+  width: 95%;
+  max-width: 800px;
+}
+
+/* Mobile adjustments */
+@media (max-width: 640px) {
+  .blob, .blob-glow {
+    width: 70%;
+    max-width: 420px;
+  }
+}
+
+@media (max-width: 375px) {
+  .blob, .blob-glow {
+    width: 60%;
+    max-width: 360px;
+  }
+}
 }
 
 @keyframes blob-morph {
@@ -1844,7 +1886,20 @@ body {
   }
 }
 
-.hero-img-z { z-index: 10; }
+.hero-img-z {
+  z-index: 10;
+  width: auto;
+  max-width: 66%; /* default: fits nicely on desktop */
+  height: auto; /* avoid full-height stretching */
+  max-height: 75vh;
+}
+
+@media (max-width: 640px) {
+  .hero-img-z {
+    max-width: 46%; /* smaller on mobile */
+    max-height: 50vh;
+  }
+}
 
 /* Armadillo floating in space - continuous, organic, weightless */
 .floating {
