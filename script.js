@@ -5,6 +5,21 @@ document.documentElement.classList.toggle(
         window.matchMedia("(prefers-color-scheme: dark)").matches)
 );
 
+// Globe follow/zoom state (shared across handlers)
+const globeViewState = {
+    instance: null,
+    followTarget: null,
+    defaultPov: null,
+    // Raised slightly to make the camera stay farther from satellites (less zoom-in)
+    followAlt: 1.6,
+    followLerp: 0.08,
+    zoomDuration: 1200,
+    followActiveAt: 0,
+    zooming: false,
+    zoomStart: 0,
+    zoomFrom: null
+};
+
 // localStorage.removeItem('theme')
 function toggleMenu(state) {
     let sidebar = document.getElementById("sidebar");
@@ -325,6 +340,16 @@ function closeSatelliteDetails() {
             defaultInfo.classList.remove('info-enter');
         }, 300);
     }, 300);
+
+    // Reset globe view when closing the info box
+    if (globeViewState.instance) {
+        globeViewState.followTarget = null;
+        globeViewState.zooming = false;
+        globeViewState.zoomFrom = null;
+        globeViewState.instance.controls().autoRotate = true;
+        const pov = globeViewState.defaultPov || { altitude: 2 };
+        globeViewState.instance.pointOfView(pov, globeViewState.zoomDuration);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -511,6 +536,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             showSatelliteDetails(detailsHTML);
 
+            // Smooth zoom and follow the clicked satellite
+            if (obj && typeof obj.lat === 'number' && typeof obj.lng === 'number') {
+                globeViewState.followTarget = obj;
+                myGlobe.controls().autoRotate = false;
+                globeViewState.followActiveAt = Date.now();
+                globeViewState.zooming = true;
+                globeViewState.zoomStart = Date.now();
+                globeViewState.zoomFrom = myGlobe.pointOfView();
+            }
+
             // Update orbital parameters
             const altitudeKm = Math.round(obj.alt * 6371);
             const mu = 398600.4418;
@@ -557,7 +592,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Adjust initial view
     myGlobe.pointOfView({altitude: 1.5});
-    setTimeout(() => myGlobe.pointOfView({altitude: 2}));
+    setTimeout(() => {
+        myGlobe.pointOfView({altitude: 2});
+        globeViewState.defaultPov = myGlobe.pointOfView();
+    });
 
     const parseTleFile = (rawData) => rawData.replace(/\r/g, '')
         .split(/\n(?=[^12])/)
@@ -651,6 +689,44 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }
             });
 
+            // Follow the selected satellite smoothly (per-frame lerp to avoid segmenting)
+            if (
+                globeViewState.followTarget &&
+                typeof globeViewState.followTarget.lat === 'number' &&
+                Date.now() >= globeViewState.followActiveAt
+            ) {
+                const target = {
+                    lat: globeViewState.followTarget.lat,
+                    lng: globeViewState.followTarget.lng,
+                    altitude: globeViewState.followAlt
+                };
+
+                const current = myGlobe.pointOfView();
+                const now = Date.now();
+
+                // Compute zoom progress (0..1). While zooming, ease altitude toward followAlt.
+                let altitudeTarget = target.altitude;
+                if (globeViewState.zooming && globeViewState.zoomFrom) {
+                    const t = Math.min((now - globeViewState.zoomStart) / globeViewState.zoomDuration, 1);
+                    const eased = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; // easeInOutQuad
+                    altitudeTarget = globeViewState.zoomFrom.altitude + (target.altitude - globeViewState.zoomFrom.altitude) * eased;
+                    if (t >= 1) {
+                        globeViewState.zooming = false;
+                        globeViewState.zoomFrom = null;
+                    }
+                }
+
+                // Smooth follow with lerp; start immediately to avoid end-of-zoom jump
+                const lerp = globeViewState.followLerp;
+                const next = {
+                    lat: current.lat + (target.lat - current.lat) * lerp,
+                    lng: current.lng + (target.lng - current.lng) * lerp,
+                    altitude: current.altitude + (altitudeTarget - current.altitude) * lerp
+                };
+
+                myGlobe.pointOfView(next, 0);
+            }
+
             // Update both objects and paths
             myGlobe
                 .objectsData(satData.filter(d => !isNaN(d.lat) && !isNaN(d.lng) && !isNaN(d.alt)))
@@ -683,6 +759,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     resizeObserver.observe(globeContainer);
     window.addEventListener('resize', updateGlobeSize);
+
+    // Expose globe instance for close handler
+    globeViewState.instance = myGlobe;
 
     // 🔧 Restart typewriter animations when the ABOUT section or individual items become visible again
     (function setupTypewriterReplay() {
